@@ -1,0 +1,2 @@
+type = sqlite
+path = /mnt/nas/storage/documents/yelp.db

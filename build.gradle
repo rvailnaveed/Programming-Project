@@ -1,0 +1,47 @@
+import edu.cs1013.yelp.task.CSV2MySQL
+
+group 'edu.cs1013.yelp'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+mainClassName = 'edu.cs1013.yelp.Application'
+
+repositories {
+	mavenCentral()
+	flatDir {
+		dirs 'extlibs'
+	}
+}
+dependencies {
+	testCompile group: 'junit', name: 'junit', version: '4.12'
+	compile 'org.processing:core:3.3.+'
+	compile 'org.apache.commons:commons-dbcp2:2.2.+'
+	compile 'mysql:mysql-connector-java:5.1.+'
+	compile 'org.xerial:sqlite-jdbc:3.21.+'
+	compile name: 'gicentreUtils'
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+}
+
+ext.csvPath = '.'
+task importUsers(type:CSV2MySQL) {
+	mode = 'users'
+}
+task importBusinesses(type:CSV2MySQL) {
+	mode = 'businesses'
+}
+task importReviews(type:CSV2MySQL, dependsOn: [ importUsers, importBusinesses ]) {
+	mode = 'reviews'
+}
+task importTips(type:CSV2MySQL, dependsOn: [ importUsers, importBusinesses ]) {
+	mode = 'tips'
+}
+task importData(dependsOn: [ importUsers, importBusinesses, importReviews, importTips ])

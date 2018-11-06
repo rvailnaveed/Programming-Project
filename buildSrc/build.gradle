@@ -1,0 +1,12 @@
+repositories {
+	mavenCentral()
+}
+dependencies {
+	compile 'org.apache.commons:commons-csv:1.5'
+	compile 'mysql:mysql-connector-java:5.1.+'
+}
+sourceSets.main {
+	resources {
+		srcDirs = [ '../src/main/resources' ]
+	}
+}
